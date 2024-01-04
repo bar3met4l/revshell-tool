@@ -51,5 +51,8 @@ Choose the language you need and then input the IP and port number as required a
 
 ![Screenshot 2024-01-04 212256](https://github.com/cucumber0x1/revshell-tool/assets/66362384/3441862c-70d4-4336-bf8f-0b791e688f66)
 
+## Disclaimer
+This tool is intended for educational and ethical use only. Use it responsibly and ensure you have the necessary permissions before attempting to access any systems.
 
-
+## License
+The revshell-tool project is licensed under [MIT License](/LICENSE)
