@@ -53,9 +53,13 @@ This is required for the dependencies to be installed
 Once the dependencies are installed the tool will finally be run
 
 ### Preview
-Choose the language you need and then provide yes or no, if you want to use ngrok for setting up public IP and then provide port you want to setup for public ip from your system.
+Choose your preferred language, then specify whether you want to use ngrok to set up a public IP. Finally, provide the port you want to use for the public IP from your system. This will generate the reverse shell script and set up the netcat listener accordingly.
 
 ![Screenshot 2024-01-04 212256](https://github.com/bar3met4l/revshell-tool/assets/66362384/e0e45293-6524-430e-9efa-0268a090f42e)
+
+If you choose no, you will be asked to provide the IP address and port number manually. Afterward, the reverse shell script will be generated along with the netcat listener setup.
+
+![image](https://github.com/bar3met4l/revshell-tool/assets/66362384/a27fe1c2-c5b2-4ddf-ad39-eb04d00b6133)
 
 ## Disclaimer
 This tool is intended for educational and ethical use only. Use it responsibly and ensure you have the necessary permissions before attempting to access any systems.
