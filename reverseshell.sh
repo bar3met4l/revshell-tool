@@ -67,6 +67,16 @@ while true; do
     local option="$1"
     local host="$2"
     local port="$3"
+    if [[ ! $host =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        echo -e "\e[1;31mInvalid IP address format. Please enter a valid IP address.\e[0m"
+        return
+    fi
+
+    # Validate port number
+    if [[ ! $port =~ ^[0-9]+$ ]] || [ $port -le 0 ] || [ $port -gt 65535 ]; then
+        echo -e "\e[1;31mInvalid port number. Please enter a valid port (1-65535).\e[0m"
+        return
+    fi
 
     case "$option" in
       1)
