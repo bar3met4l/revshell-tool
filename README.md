@@ -53,9 +53,9 @@ This is required for the dependencies to be installed
 Once the dependencies are installed the tool will finally be run
 
 ### Preview
-Choose the language you need and then input the IP and port number as required and get the desired script
+Choose the language you need and then provide yes or no, if you want to use ngrok for setting up public IP and then provide port you want to setup for public ip from your system.
 
-![Screenshot 2024-01-04 212256](https://github.com/cucumber0x1/revshell-tool/assets/66362384/3441862c-70d4-4336-bf8f-0b791e688f66)
+![Screenshot 2024-01-04 212256](https://github.com/bar3met4l/revshell-tool/assets/66362384/e0e45293-6524-430e-9efa-0268a090f42e)
 
 ## Disclaimer
 This tool is intended for educational and ethical use only. Use it responsibly and ensure you have the necessary permissions before attempting to access any systems.
