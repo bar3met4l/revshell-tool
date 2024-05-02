@@ -10,6 +10,12 @@ The Revshell tool is a simple bash script that helps users generate reverse shel
 - User-friendly prompt for selecting the language and entering the IP address and port.
 - Easy to use and integrate into different environments.
 
+## Prerequisite
+Before installing and running Revshell, ensure you have installed the required dependency tools on your system
+
+[ngrok](https://dashboard.ngrok.com/get-started/setup/linux)
+ 
+
 ## Installation
 
 ### 1. Clone the repository:
