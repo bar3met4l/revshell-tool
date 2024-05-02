@@ -148,7 +148,7 @@ while true; do
   done
 
   # Option to use ngrok for public IP
-  read -p "Do you want to use ngrok for public IP? (yes/no): " use_ngrok
+  read -p "Do you want to use ngrok for public IP? (yes/NO): " use_ngrok
   if [[ "$use_ngrok" == "yes" ]]; then
     read -p "Enter the port for ngrok to listen on: " ngrok_port
     ngrok tcp $ngrok_port > /dev/null &
