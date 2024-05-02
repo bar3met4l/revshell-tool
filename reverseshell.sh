@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #List of prerequisite tools
-required_tools=("lolcat" "toilet" "xclip" "ngrok" "netcat")
+required_tools=("lolcat" "toilet" "xclip" "netcat")
 
 #Function to check if a tool is installed
 check_tool(){
