@@ -7,10 +7,10 @@ required_tools=("lolcat" "toilet" "xclip")
 check_tool(){
   command -v "$1" >/dev/null 2>&1
 }
-package_manager=""
+
 
 # Read package manager only once
-
+package_manager=""
 
 #Function to download and install a tool
 install_tool() {
@@ -150,7 +150,14 @@ while true; do
   # Option to use ngrok for public IP
   read -p "Do you want to use ngrok for public IP? (yes/NO): " use_ngrok
   if [[ "$use_ngrok" == "yes" ]]; then
-    read -p "Enter the port for ngrok to listen on: " ngrok_port
+    while true; do
+      read -p "Enter the port for ngrok to listen on: " ngrok_port
+      if [[ "$ngrok_port" =~ ^[0-9]+$ ]] && [ "$ngrok_port" -ge 1 ] && [ "$ngrok_port" -le 65535 ]; then
+        break
+      else
+        echo "Invalid port. Please enter a valid port number (1-65535)."
+      fi
+    done
     ngrok tcp $ngrok_port > /dev/null &
     sleep 2
     host=$(curl --silent http://127.0.0.1:4040/api/tunnels | grep -Po '"public_url":"tcp://\K[^"]*')
@@ -163,10 +170,35 @@ while true; do
     pkill ngrok
   else
     # Get user input for IP address
-    read_green "Enter the IP address: " host
-
+    while true; do
+      read_green "Enter the IP address: " host
+      if [[ "$host" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+        IFS='.' read -r -a octets <<< "$host"
+        valid=true
+        for octet in "${octets[@]}"; do
+          if ! ((octet >= 0 && octet <= 255)); then
+            valid=false
+            break
+          fi
+        done
+        if $valid; then
+          break
+        else
+          echo -e "\e[1;31mInvalid IP address, each octet must be between 0 and 255. Please try again!\e[0m"
+        fi
+      else
+        echo -e "\e[1;31mInvalid IP address format, please try again!!\e[0m"
+      fi
+    done
     # Get user input for port
-    read_green "Enter the port: " port
+    while true; do
+      read_green "Enter the port: " port
+      if [[ "$port" =~ ^[0-9]+$ ]] && [ "$port" -ge 1 ] && [ "$port" -le 65535 ]; then
+        break
+      else
+        echo -e "\e[1;31mInvalid port. Please enter a valid port number (1-65535).\e[0m"
+      fi
+    done
     generate_reverse_shell "$option" "$host" "$port"
     echo "Setting up netcat listener on port $port..."
     nc -lvp $port 
